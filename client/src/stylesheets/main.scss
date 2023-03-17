@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap');
+@import "./variables.scss";
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+button {
+    height: 2rem;
+    width: 5rem;
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    background: $blue;
+    color: $bg;
+}
+
+// HOME
+.home__container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    background: $bg;
+
+    .home__header {
+        text-align: center;
+        margin: 2rem 0 1rem 0;
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        } 
+
+        p {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.home__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+// FILE UPLOAD
+.fileupload__container {
+    padding: 1rem;
+    width: 60%;
+
+    .fileupload__button {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .fileupload__types {
+        margin: 1rem 0 0.8rem 0.2rem;
+        text-align: left;
+
+        p {
+            font-size: 0.9rem;
+        }
+    }
+
+    .fileupload__dropzone {
+        padding: 2rem;
+        background: $white;
+        border-radius: 0.5rem;
+        box-shadow: $boxShadow;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .fileupload__dropzone:hover {
+        // opacity: 0.6;
+    }
+
+    
+    .dropzone__box {
+        border: 2px dashed $blue;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        svg {
+            font-size: 2.5rem;
+            color: $blue;
+        }
+    }
+
+    input {
+        display: none;
+    }
+
+    label {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       gap: 1.5rem;
+       width: 100%;
+       padding: 2rem;
+    }
+
+    .select-file {
+        font-weight: 700;
+        cursor: pointer;
+    }
+}
+
+// FILE
+.file__container {
+    width: 58.5%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 12rem;
+
+    .file__box {
+        background: $white;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1.5px solid $gray;
+        border-radius: 0.5rem;
+
+        svg {
+            font-size: 2rem;
+        }
+
+        p {
+            font-size: 0.8rem;
+        }
+    }
+}

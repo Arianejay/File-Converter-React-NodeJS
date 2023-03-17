@@ -4,7 +4,7 @@ import logger from "../globals/logger";
 import FileService from "../services/file.service";
 
 /**
- * @desccription
+ * @description
  *  File convert function controller
  */
 export const ConvertFile = async (
