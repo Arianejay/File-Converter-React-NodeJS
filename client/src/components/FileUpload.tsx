@@ -1,31 +1,12 @@
-import React, {
-    useState,
-    DragEvent,
-    MouseEvent,
-    ChangeEvent,
-    useRef,
-} from "react";
+import React, { useState, DragEvent, MouseEvent } from "react";
 import { BsCloudUploadFill } from "react-icons/bs";
 
+import FileService from "../services/FileService";
 import File from "./File";
 
 const FileUpload: React.FC<{}> = ({}) => {
     const [file, setFile] = useState<File | {}>({});
-
-    const handleDragEnter = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
+    const [fileConverted, setFileConverted] = useState<Array<Blob>>([]);
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -34,10 +15,17 @@ const FileUpload: React.FC<{}> = ({}) => {
         setFile(selectedFile);
     };
 
-    const handleClear = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setFile({});
+    const handleUpload = async (e: MouseEvent<HTMLButtonElement>) => {
+        await FileService.handleUpload(Object.values(file))
+            .then((res) => {
+                setFileConverted(res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
+
+    console.log(fileConverted);
 
     return (
         <>
@@ -45,9 +33,9 @@ const FileUpload: React.FC<{}> = ({}) => {
                 <div className="fileupload__dropzone">
                     <div
                         className="dropzone__box"
-                        onDragEnter={handleDragEnter}
-                        onDragLeave={handleDragLeave}
-                        onDragOver={handleDragOver}
+                        onDragEnter={FileService.handleDrag}
+                        onDragLeave={FileService.handleDrag}
+                        onDragOver={FileService.handleDrag}
                         onDrop={handleDrop}
                     >
                         <input
@@ -71,9 +59,9 @@ const FileUpload: React.FC<{}> = ({}) => {
                     <p>Accepted File Types: .docx, .doc, .txt</p>
                 </div>
                 <div className="fileupload__button">
-                    <button>Upload</button>
+                    <button onClick={handleUpload}>Upload</button>
                     {Object.keys(file).length !== 0 && (
-                        <button onClick={handleClear}>Cancel</button>
+                        <button onClick={() => setFile({})}>Cancel</button>
                     )}
                 </div>
             </div>
