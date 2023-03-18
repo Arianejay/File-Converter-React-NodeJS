@@ -1,4 +1,5 @@
 import { DragEvent } from "react";
+import { IBufferData } from "../types/IFile";
 
 import { axiosInstance } from "./config";
 
@@ -14,7 +15,20 @@ class FileService {
 
         try {
             const res = await axiosInstance.post("/file/convert", data);
-            return Promise.resolve(res.data.data);
+            const bufferDataArray = res.data;
+            let newBlobDataArray = [] as Array<object>;
+
+            // convert to our buffer data to blob
+            bufferDataArray.forEach((bufferData: IBufferData) => {
+                console.log(bufferData.buffer.data);
+                bufferData.buffer.data = new Blob([bufferData.buffer.data], {
+                    type: "application/pdf",
+                });
+                bufferData.buffer.type = "Blob";
+                newBlobDataArray.push(bufferData);
+            });
+
+            return Promise.resolve(newBlobDataArray);
         } catch (error) {
             return Promise.reject(error);
         }

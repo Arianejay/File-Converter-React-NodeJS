@@ -25,6 +25,13 @@ button {
     color: $bg;
 }
 
+a {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: $blue
+}
+
 // HOME
 .home__container {
     height: 100vh;
@@ -141,6 +148,12 @@ button {
         padding: 1rem;
         border: 1.5px solid $gray;
         border-radius: 0.5rem;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
 
         svg {
             font-size: 2rem;

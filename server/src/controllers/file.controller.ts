@@ -13,23 +13,13 @@ export const ConvertFile = async (
     next: NextFunction
 ) => {
     try {
-        const files = req.files as any;
-        let bufferArr: Buffer[] = [];
+        const files = req.files as Array<object | File>;
 
         if (!files) throw new Error("Error, no files uploaded!");
 
-        await files.forEach((file: any) => {
-            FileService.convertFile(file)
-                .then((data: Buffer) => {
-                    bufferArr.push(data);
-                    console.log(data);
-                })
-                .catch((err: Error) => {
-                    logger.error(err);
-                    return res.status(500).json(err);
-                });
-        });
-        return res.status(200).json("Successfully converted the files.");
+        const fileData = await FileService.convertFile(files);
+
+        return res.status(200).json(fileData as Array<File | object>);
     } catch (error) {
         logger.error(error);
         next(error);

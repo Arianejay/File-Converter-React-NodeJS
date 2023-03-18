@@ -6,7 +6,7 @@ import File from "./File";
 
 const FileUpload: React.FC<{}> = ({}) => {
     const [file, setFile] = useState<File | {}>({});
-    const [fileConverted, setFileConverted] = useState<Array<Blob>>([]);
+    const [fileConverted, setFileConverted] = useState<Array<object>>([]);
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -18,7 +18,7 @@ const FileUpload: React.FC<{}> = ({}) => {
     const handleUpload = async (e: MouseEvent<HTMLButtonElement>) => {
         await FileService.handleUpload(Object.values(file))
             .then((res) => {
-                setFileConverted(res);
+                return setFileConverted(res);
             })
             .catch((err) => {
                 console.log(err);
@@ -59,13 +59,15 @@ const FileUpload: React.FC<{}> = ({}) => {
                     <p>Accepted File Types: .docx, .doc, .txt</p>
                 </div>
                 <div className="fileupload__button">
-                    <button onClick={handleUpload}>Upload</button>
                     {Object.keys(file).length !== 0 && (
-                        <button onClick={() => setFile({})}>Cancel</button>
+                        <>
+                            <button onClick={handleUpload}>Upload</button>
+                            <button onClick={() => setFile({})}>Cancel</button>
+                        </>
                     )}
                 </div>
             </div>
-            <File file={Object.values(file)} />
+            <File file={Object.values(file)} fileConverted={fileConverted} />
         </>
     );
 };
