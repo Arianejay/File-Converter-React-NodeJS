@@ -30,9 +30,9 @@ const File: React.FC = ({ file, fileConverted }: any | Array<object>) => {
                                     (file: IBufferData, idx: number) => (
                                         <a
                                             href={URL.createObjectURL(
-                                                file.buffer.data
+                                                file?.buffer?.data
                                             )}
-                                            download={file.filename + ".pdf"}
+                                            download="Sample.pdf"
                                             key={idx}
                                         >
                                             Download

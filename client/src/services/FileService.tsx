@@ -5,30 +5,40 @@ import { axiosInstance } from "./config";
 
 class FileService {
     /**
-     * @description
-     * Handler for the upload function.
-     * @param {{file: Array<object>}} file
+     * @description Handler for the upload function.
+     * @param {{files: Array<object>;}} files
      */
     async handleUpload(files: Array<object>) {
         const data = new FormData();
         files.forEach((file: object | any) => data.append("file", file));
 
         try {
-            const res = await axiosInstance.post("/file/convert", data);
-            const bufferDataArray = res.data;
             let newBlobDataArray = [] as Array<object>;
+            let uploadProgress: number;
 
-            // convert to our buffer data to blob
-            bufferDataArray.forEach((bufferData: IBufferData) => {
-                console.log(bufferData.buffer.data);
-                bufferData.buffer.data = new Blob([bufferData.buffer.data], {
-                    type: "application/pdf",
-                });
-                bufferData.buffer.type = "Blob";
-                newBlobDataArray.push(bufferData);
+            const res = await axiosInstance.post("/file/convert", data, {
+                onUploadProgress: (progressEvent) => {
+                    uploadProgress =
+                        (progressEvent.loaded / (progressEvent.total || 1)) *
+                        100;
+                },
             });
 
-            return Promise.resolve(newBlobDataArray);
+            const bufferDataArray = res.data;
+            console.log(bufferDataArray);
+
+            /**
+             * Convert to our buffer data to blob
+             */
+            // bufferDataArray.forEach((bufferData: IBufferData) => {
+            //     bufferData.buffer.data = new Blob([bufferData.buffer.data], {
+            //         type: "application/pdf",
+            //     });
+            //     bufferData.buffer.type = "Blob";
+            //     newBlobDataArray.push(bufferData);
+            // });
+
+            // return Promise.resolve(newBlobDataArray);
         } catch (error) {
             return Promise.reject(error);
         }

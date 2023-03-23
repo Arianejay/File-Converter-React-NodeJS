@@ -12,8 +12,22 @@ class FileService {
 
     /**
      * @description
+     * Converts our buffer to ArrayBuffer
+     * @param {Buffer} buffer
+     */
+    toArrayBuffer(buffer: Buffer) {
+        const ab = new ArrayBuffer(buffer.length);
+        const view = new Uint8Array(ab);
+        for (let i = 0; i < buffer.length; ++i) {
+            view[i] = buffer[i];
+        }
+        return ab;
+    }
+
+    /**
+     * @description
      * Logic business for converting our files using libreoffice-convert
-     * @param {{files: Array<object | File>}} files
+     * @param {Array<object | File>} files
      */
     async convertFile(files: Array<object | File>) {
         let buffArray = [] as Array<object | File>;
@@ -22,7 +36,7 @@ class FileService {
                 `Converting file ${file.filename}: ${file.originalname}...`
             );
             const ext = ".pdf";
-            const inputPath = await file.path;
+            const inputPath = file.path;
             const outputPath = this.#path.join(
                 settings.PDF_DIR,
                 file.filename + ext
@@ -38,7 +52,7 @@ class FileService {
             logger.info(`${file.originalname} successfully converted to pdf!`);
 
             buffArray.push({
-                buffer: pdfBuf,
+                buffer: this.toArrayBuffer(pdfBuf),
                 filename: file.filename,
             });
         }

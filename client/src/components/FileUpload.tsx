@@ -7,6 +7,7 @@ import File from "./File";
 const FileUpload: React.FC<{}> = ({}) => {
     const [file, setFile] = useState<File | {}>({});
     const [fileConverted, setFileConverted] = useState<Array<object>>([]);
+    const [progress, setProgress] = useState<number>(0);
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -17,15 +18,13 @@ const FileUpload: React.FC<{}> = ({}) => {
 
     const handleUpload = async (e: MouseEvent<HTMLButtonElement>) => {
         await FileService.handleUpload(Object.values(file))
-            .then((res) => {
-                return setFileConverted(res);
+            .then((newBlobDataArray) => {
+                setFileConverted(newBlobDataArray);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
-
-    console.log(fileConverted);
 
     return (
         <>
